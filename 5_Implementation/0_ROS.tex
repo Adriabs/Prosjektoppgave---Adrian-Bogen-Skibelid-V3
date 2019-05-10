@@ -1,0 +1,5 @@
+\section{ROS}
+
+For the whole autonomous pipeline, the system used the Robot Operating System (ROS)\cite{ROS}. It claims to be a "meta-operating system", providing a wealth of services that a modern robot system might need, like message-passing between processes, facilitating debugging, visualization, low level device control and packet management. It also includes a standardized framework for working with coordinate system transformations and an abundance of standard and user-made packages for all sorts of operations, libraries and so on. \\
+
+What the team used it for most is package management, providing a unified system for building the whole pipeline, the standardized message passing system and the transformation framework. It also provides an easy interface between the software and many of the cars sensors, like the IMU, converting sensor data into standard message types that are easy to use by the rest of the system. Finally it gave us a nice way of visualizing data, using ROS's RVIZ, and for debugging the communication between the different nodes in the pipeline, using rqt and especially rqt\_graph.

@@ -1,0 +1,13 @@
+\section{Generating ground truth}
+
+To measure the accuracy of both the SLAM system and the state estimator, as well as for tuning gains in them, good ground truth of both position and velocity is needed. It's also needed by other systems on the car, like for example the detection algorithms. There are several ways of creating this ground truth. One could do measurements by hand, either using a simple yardstick or handheld laser distance measurement. This is however very unreliable, takes a lot of time and effort and is only feasible for position, not velocity. \\ 
+
+Another option is using a system of automatic ranging lasers, but they are expensive and the commercially available ones have low range as they are made for robotics. Such a system could potentially be made from scratch at a much lower cost, but this is very time consuming, and time is one of the scarcest resources at Revolve. \\
+
+Yet another option is visual feature tracking, but this is unreliable, and either time-consuming to make or expensive to buy. The team also doubts whether it works as well for our use, as we want centimeter precision at high speeds and cannot guarantee perfect lightning conditions. \\ 
+
+The team also looked into using the telemetry antenna as ground truth, since it is has $60$ radio antennas in its receiver, and can be configured to output a pretty accurate spherical angle to the car from the antenna. The estimate of time of flight was however not very good, so to get the position in three dimensions another antenna is needed. We are still waiting for this, but if we get it from our sponsor then it looks very promising. As of now though, another way of doing validation is needed. \\
+
+The validation setup the team ended up settling on is a Real-time kinematics global positioning system (RTK-GPS). A base station is set up, sending corrections to the gps system on the car through our telemetry antenna. When the system has enough time to initialize and find a good fix on the position of the base station, and the test area has a good view of the sky without much multipath, then this works very well. \\
+
+It does however mean that testing is a bit more tedious, since the chosen validation method gives constraints on test location and means it takes more time. It also means the ground truth needs some post processing to work well for tuning, removing outliers and parts where the GPS system lost fix on enough satelites.

@@ -1,0 +1,9 @@
+\section{SLAM}
+
+The SLAM backend was implemented using the GTSAM factor graph frame work\cite{GTSAM}, and more specifically using its iSAM2\cite{iSAM2} library. This allowed us to optimize only the most relevant parts of the graph, thus keeping the run time down. \\
+
+The optimization still uses some time, much more than the frontend. Therefore, in order for the frontend to be able to work without having to wait for the optimization to finish, the frontend and backend is separated into two threads. This makes it possible to both optimize the graph and handle new incoming detections at the same time. \\
+
+The disadvantage is however that the interplay between the two threads need to be controlled. This is done by having the two threads communicate through variables that are locked by mutexes, i.e. only allowing one thread to operate on the variables at a time. The map and odometry information, as well as the list of new measurements and new landmarks being sent from the frontend to the backend are locked by mutexes. This makes sure that no information is lost or corrupted by simultaneous operations on the same variable. \\
+
+Another concern that had to be adresses was how the system could use both the estimated pose of the vehicle in the odometry frame, and the correction from the SLAM backend on the transformation between the odometry frame and the map frame. This was done using the ROS tf framework. It gives access to a lookupTransform function that gives the transformation between any two frames that have all the needed transformation posted on the tf server. Thus the newest estimate of the body frame could be found by querying for the transform between the map and body frames. 

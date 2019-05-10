@@ -1,0 +1,9 @@
+\section{State estimation}
+
+The nonlinear observer used for state estimation was first developed in MATLAB, because it allowed the system to be tested easily on data from last years summer testing period. The IMU data was pretty noisy, since they had not managed to turn on the internal Kalman filter in the VN300, like we have now. This meant that a lowpass filter had to be employed on the yaw rate, as this especially contained a lot of noise. \\
+
+After the observer was tuned and validated on data from last year in MATLAB, it was implemented in c++, using ROS to get the messages in from the sensor and sending out the state estimates. A practical concern was the different output rates of the sensors; the IMU ran at a higher output than the RPM and steering angle sensors. Therefore a "sample and hold" technique was used, always using the latest value of the RPM and steering angle. This was tested on the few ROS-bags that the team had from last year that contained all the right sensor data, and proved not to cause any trouble.  \\
+
+\subsubsection{$v_y$ decay}
+
+When first implementing the observer, it turned out to be very unstable, shooting of into infinity every once in a while. This was fixed by having the estimate of $v_y$ decay towards zero exponentially, by adding a proportional feedback term, with a gain of $0.3$. After this the observer was completely stable.

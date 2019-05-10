@@ -1,0 +1,20 @@
+\chapter{Future work}
+Due to the nature of the competition, this whole year has been colored by time pressure. There are therefore several places where there is room for improvement, as the team was constantly forced to take desicions on what would most benefit the team to do. Below are suggestions for future work that the author feels might benefit the team and should be investigated further.
+
+\subsubsection{State estimation}
+To improve the state estimation, the team should try to get a sponsorship deal with a company making high quality optical sensors. Adding this speed over ground estimate would improve the state estimation a lot, since these are extremely precise, at least when the ground is dry. However, since their performance degrade a lot when the road is wet, this would also need to be coupled with a system that estimates the wetness of the ground. The speed over ground sensor should then not be trusted, so a nice switching rule would also need to be implemented. \\
+
+If a sponsorship deal cannot be made, it's of the authors opinion that such a sensor does not give enough improvements to warrant the price. The team should keep an ear to the ground and get one if they ever overcome the obstacle of wet tarmac, as it then could be used directly as the only source of state estimation, and one could use the processing power elsewhere.
+
+\subsubsection{Roll estimation}
+Since the car rolls an non negible amount when cornering, a good next step would be to estimate the roll angle. This could then be used in the detection algorithms to compensate for roll in the position estimate, or by making the whole factor graph work in 6DOF instead of 3DOF. This would however mean more processing power would be needed for the whole optimization, so there is definitely a trade off.
+
+\subsubsection{GPU acceleration of optimization algorithms}
+Since processing power and processing time needs to be as small as possible to give room for the other systems on the car and facilitate real time processing so the car can drive fast, GPU acceleration of the optimization algorithms used to optimize the factor graph is a good next step for the team. It is not clear to the author how large of a task this is, so investigations need to be made prior to commiting to this.\\ 
+
+A good first step is to identify areas of the code that are used a lot and do the same operation many times over. Then try implementing it in CUDA, and time it to see if the cost of moving variables to the GPU memory outweights the lowered processing time used on the calculations. 
+
+\subsubsection{Use planned path when setting initial confidence}
+Because of the nature of the track we're trying to map, knowledge about some cones also gives a higher prior on where other cones are located. This means that a natural next step for the team would be to use the possible path coming out of the path planning node to set a higher confidence on measured cones if the cone is close to half a trackwidth away from the planned path. \\
+
+This is of course not without cost. The team should test if this is feasible in terms of computational time, especially when running the full pipeline. It should also be verified that this does not cause more instability in the path planning. A feedback loop of this type could mean the system more easily plans a path that brings the car out of the track. However, this does have the possibility of improving the planning range by a lot, which in the authors opinion makes it worth investigating.
